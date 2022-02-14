@@ -13,6 +13,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>MockupService</name>
 	<description>Mockup service for application server simulation</description>
+	<packaging>war</packaging>
 	<properties>
 		<java.version>14</java.version>
 	</properties>
