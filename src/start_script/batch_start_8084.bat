@@ -1,1 +1,1 @@
-java -Dserver.port=8084 -jar C:\Users\Buzsu\IdeaProjects\MockupService\target\MockupService-0.0.1-SNAPSHOT.war
+java -Dserver.port=8084 -jar C:\Users\Buzsu\IdeaProjects\MockService\target\MockService-v20220405-00.jar

@@ -1,10 +1,10 @@
-package hu.gdf.thesis.MockupService;
+package hu.gdf.thesis.MockService;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class MockupServiceApplicationTests {
+class MockServiceApplicationTests {
 
 	@Test
 	void contextLoads() {

@@ -9,11 +9,11 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>hu.gdf.thesis</groupId>
-	<artifactId>MockupService</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>MockService</artifactId>
+	<version>v20220405-00</version>
 	<name>MockupService</name>
-	<description>Mockup service for application server simulation</description>
-	<packaging>war</packaging>
+	<description>Mock service for application server simulation</description>
+	<packaging>jar</packaging>
 	<properties>
 		<java.version>14</java.version>
 	</properties>
