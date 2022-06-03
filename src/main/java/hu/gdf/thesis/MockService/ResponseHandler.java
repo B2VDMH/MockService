@@ -1,8 +1,6 @@
 package hu.gdf.thesis.MockService;
 
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +15,8 @@ import java.nio.file.Paths;
 import java.util.Random;
 
 @RestController
-@ResponseStatus(code = HttpStatus.BAD_REQUEST, reason = "The request was invalid")
+@ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "The server has not found anything matching the request")
+@Slf4j
 public class ResponseHandler {
 
     @Autowired
@@ -28,28 +27,27 @@ public class ResponseHandler {
     private static final String PARTITION_1 = "/partitionLevel/partition1/Partition1ResourceGroup";
     private static final String PARTITION_2 = "/partitionLevel/partition2/Partition2ResourceGroup";
 
-    private Logger LOGGER = LoggerFactory.getLogger(ResponseHandler.class);
-
 
     @GetMapping(SERVER_LIFE_CYCLE_RUNTIMES + "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public String healthResponse(@PathVariable String id) {
-        String filePath = filePathBuilder(SERVER_LIFE_CYCLE_RUNTIMES, id).toString();
+        String filePath = filePath(SERVER_LIFE_CYCLE_RUNTIMES, id).toString();
         try {
-            LOGGER.info("Server Life Cycle Runtimes request received.");
+            log.info("Server Life Cycle Runtimes request received.");
+            log.info(filePath);
             return new String(Files.readAllBytes(Paths.get(filePath + ".json")));
         } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-
     }
 
     @GetMapping(JDBC_SYSTEM_RESOURCES + "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public String jdbcSysResourceResponse(@PathVariable String id) {
-        String filePath = filePathBuilder(JDBC_SYSTEM_RESOURCES, id).toString();
+        String filePath = filePath(JDBC_SYSTEM_RESOURCES, id).toString();
         try {
-            LOGGER.info("JDBC system resource request received.");
+            log.info("JDBC system resource request received.");
+            log.info(filePath);
             return new String(Files.readAllBytes(Paths.get(filePath + ".json")));
         } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -59,9 +57,10 @@ public class ResponseHandler {
     @GetMapping(PARTITION_1 + "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public String partition1ResourceGroup(@PathVariable String id) {
-        String filePath = filePathBuilder(JDBC_SYSTEM_RESOURCES, id).toString();
+        String filePath = filePath(JDBC_SYSTEM_RESOURCES, id).toString();
         try {
-            LOGGER.info("Request for partition 1 received.");
+            log.info("Request for partition 1 received.");
+            log.info(filePath);
             return new String(Files.readAllBytes(Paths.get(filePath + ".json")));
         } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -71,9 +70,10 @@ public class ResponseHandler {
     @GetMapping(PARTITION_2 + "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public String partition2ResourceGroup(@PathVariable String id) {
-        String filePath = filePathBuilder(PARTITION_2, id).toString();
+        String filePath = filePath(PARTITION_2, id).toString();
         try {
-            LOGGER.info("Request for partition 2 received.");
+            log.info("Request for partition 2 received.");
+            log.info(filePath);
             return new String(Files.readAllBytes(Paths.get(filePath + ".json")));
         } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -85,21 +85,20 @@ public class ResponseHandler {
         throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    private StringBuilder filePathBuilder(String restPath, String id) {
+    private String filePath(String restPath, String id) {
         StringBuilder builder = new StringBuilder();
         builder.append(pathConfiguration.getPath());
-        String path = restPath;
-        if(System.getProperty("os.name").toLowerCase().startsWith("win")) {
-            path = restPath.replaceAll("/", "\\\\");
-        }
-        builder.append(path);
-        builder.append(File.separator);
         builder.append(restPath);
+        builder.append(File.separator);
         builder.append(id);
         builder.append(File.separator);
         builder.append(randomInt());
+        String path = builder.toString();
 
-        return builder;
+        if(System.getProperty("os.name").toLowerCase().startsWith("win")) {
+            return path.replaceAll("/", "\\\\");
+        }
+        return path;
     }
 
     private int randomInt() {
