@@ -31,7 +31,7 @@ public class ResponseHandler {
     @GetMapping(SERVER_LIFE_CYCLE_RUNTIMES + "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public String healthResponse(@PathVariable String id) {
-        String filePath = filePath(SERVER_LIFE_CYCLE_RUNTIMES, id).toString();
+        String filePath = filePath(SERVER_LIFE_CYCLE_RUNTIMES, id);
         try {
             log.info("Server Life Cycle Runtimes request received.");
             log.info(filePath);
@@ -44,7 +44,7 @@ public class ResponseHandler {
     @GetMapping(JDBC_SYSTEM_RESOURCES + "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public String jdbcSysResourceResponse(@PathVariable String id) {
-        String filePath = filePath(JDBC_SYSTEM_RESOURCES, id).toString();
+        String filePath = filePath(JDBC_SYSTEM_RESOURCES, id);
         try {
             log.info("JDBC system resource request received.");
             log.info(filePath);
@@ -57,7 +57,7 @@ public class ResponseHandler {
     @GetMapping(PARTITION_1 + "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public String partition1ResourceGroup(@PathVariable String id) {
-        String filePath = filePath(JDBC_SYSTEM_RESOURCES, id).toString();
+        String filePath = filePath(JDBC_SYSTEM_RESOURCES, id);
         try {
             log.info("Request for partition 1 received.");
             log.info(filePath);
@@ -70,7 +70,7 @@ public class ResponseHandler {
     @GetMapping(PARTITION_2 + "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public String partition2ResourceGroup(@PathVariable String id) {
-        String filePath = filePath(PARTITION_2, id).toString();
+        String filePath = filePath(PARTITION_2, id);
         try {
             log.info("Request for partition 2 received.");
             log.info(filePath);
@@ -95,7 +95,8 @@ public class ResponseHandler {
         builder.append(randomInt());
         String path = builder.toString();
 
-        if(System.getProperty("os.name").toLowerCase().startsWith("win")) {
+        if(System.getProperty("os.name").
+                toLowerCase().startsWith("win")) {
             return path.replaceAll("/", "\\\\");
         }
         return path;
